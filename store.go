@@ -1,10 +1,29 @@
 package main
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"io"
 	"log"
 	"os"
+	"strings"
 )
+
+func CASPathTransformFunc(key string) string {
+	hash := md5.Sum([]byte(key))
+	hashStr := hex.EncodeToString(hash[:])
+
+	blockSize := 5
+	sliceLen := len(hashStr) / blockSize
+
+	paths := make([]string, sliceLen)
+	for i := 0; i < sliceLen; i++ {
+		from, to := i*blockSize, (i*blockSize)+blockSize
+		paths[i] = hashStr[from:to]
+	}
+
+	return strings.Join(paths, "/")
+}
 
 type PathTransformFunc func(string) string
 

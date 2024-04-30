@@ -10,7 +10,6 @@ import (
 func OnPeer(p p2p.Peer) error {
 	fmt.Println("Peer registered outside the TCPTranport")
 	return nil
-	// return fmt.Errorf("Failure in onPeer method")
 }
 
 func main() {
